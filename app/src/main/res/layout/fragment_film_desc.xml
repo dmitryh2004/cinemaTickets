@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".FilmDescFragment"
+    android:orientation="vertical">
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:textSize="24sp"
+        android:text="@string/films_list_item_name_default"
+        android:id="@+id/filmName">
+
+    </TextView>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_margin="20dp">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/poster_layout"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:src="@drawable/films_list_item_placeholder"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:id="@+id/filmPoster">
+
+            </ImageView>
+            <Button
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:id="@+id/filmShowSeats"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:text="@string/film_desc_show_seats_btn">
+
+            </Button>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+        <ScrollView
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:id="@+id/desc_layout">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/filmDesc"
+                    android:orientation="vertical">
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/publish_year_layout"
+                        android:orientation="horizontal">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/film_desc_publish_year">
+
+                        </TextView>
+                        <TextView android:layout_height="wrap_content"
+                            android:layout_width="wrap_content"
+                            android:id="@+id/film_desc_publish_year"
+                            android:text="@string/film_desc_publish_year_default"
+                            android:layout_marginStart="10dp">
+
+                        </TextView>
+
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/genre_layout"
+                        android:orientation="horizontal">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/film_desc_genre">
+
+                        </TextView>
+                        <TextView android:layout_height="wrap_content"
+                            android:layout_width="wrap_content"
+                            android:id="@+id/film_desc_genre"
+                            android:text="@string/film_desc_genre_default"
+                            android:layout_marginStart="10dp">
+
+                        </TextView>
+
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/rating_layout"
+                        android:orientation="horizontal">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/film_desc_rating">
+
+                        </TextView>
+                        <TextView android:layout_height="wrap_content"
+                            android:layout_width="wrap_content"
+                            android:id="@+id/film_desc_rating"
+                            android:text="@string/film_desc_rating_default"
+                            android:layout_marginStart="10dp">
+
+                        </TextView>
+
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/film_desc_layout"
+                        android:orientation="horizontal">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/film_desc">
+
+                        </TextView>
+                        <TextView android:layout_height="wrap_content"
+                            android:layout_width="wrap_content"
+                            android:id="@+id/film_description"
+                            android:text="@string/films_list_item_desc_default"
+                            android:layout_marginStart="10dp">
+
+                        </TextView>
+
+                    </LinearLayout>
+                </LinearLayout>
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/showDescBtn"
+                    android:text="@string/film_desc_show_desc_btn"
+                    android:drawableEnd="@drawable/external_link"
+                    android:visibility="gone">
+
+                </Button>
+            </LinearLayout>
+        </ScrollView>
+
+    </LinearLayout>
+
+</LinearLayout>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/aboutProgram"
+        android:title="@string/aboutProgram"
+        android:icon="@android:drawable/ic_menu_info_details"
+        app:showAsAction="withText">
+
+    </item>
+    <item
+        android:id="@+id/aboutAuthor"
+        android:title="@string/aboutAuthor"
+        android:icon="@android:drawable/ic_menu_info_details"
+        app:showAsAction="withText">
+
+    </item>
+    <item
+        android:id="@+id/profile"
+        android:title="@string/profile"
+        android:icon="@drawable/profile_icon1"
+        app:showAsAction="always">
+
+    </item>
+    <item
+        android:id="@+id/editCinemas"
+        android:title="@string/editCinemas"
+        android:icon="@android:drawable/ic_menu_edit"
+        app:showAsAction="always"/>
+</menu>

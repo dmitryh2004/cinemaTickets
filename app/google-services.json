@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "705096789740",
+    "project_id": "cinema-tickets-db",
+    "storage_bucket": "cinema-tickets-db.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:705096789740:android:f0615822338117df3d3fc9",
+        "android_client_info": {
+          "package_name": "com.example.cinematickets"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAAKtDlWyoBv_oDZ0LskuY-Foo_-D74Sh0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ProfileFragment"
+    android:gravity="center_horizontal"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/profileNameDefault"
+            android:textSize="24sp"
+            android:id="@+id/profileName">
+
+        </TextView>
+        <Button
+            android:id="@+id/editProfileBtn"
+            android:layout_marginLeft="10dp"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:background="@android:drawable/ic_menu_edit">
+
+        </Button>
+    </LinearLayout>
+
+    <ImageView
+        android:layout_height="100dp"
+        android:layout_width="100dp"
+        android:clickable="true"
+        android:id="@+id/profilePhoto"
+        android:src="@drawable/profile_default_icon">
+
+    </ImageView>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/profileEmailDefault"
+        android:textSize="20sp"
+        android:id="@+id/profileEmail">
+
+    </TextView>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/profilePhoneDefault"
+        android:textSize="20sp"
+        android:id="@+id/profilePhone">
+
+    </TextView>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="25dp"
+        android:orientation="horizontal"
+        android:gravity="center_horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:text="@string/profileBalance">
+
+        </TextView>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/profileBalance"
+            android:textSize="20sp"
+            android:text="@string/profileBalanceDefault">
+
+        </TextView>
+        <Button
+            android:layout_marginLeft="50dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/deposit"
+            android:text="@string/profileDeposit">
+
+        </Button>
+    </LinearLayout>
+    <Button
+        android:layout_marginTop="50dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/showBoughtTickets"
+        android:text="@string/showBoughtTickets">
+
+    </Button>
+    <Button
+        android:layout_marginTop="50dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/adminEditCinemas"
+        android:text="@string/adminEditCinemasText"
+        android:visibility="gone">
+
+    </Button>
+    <Button
+        android:layout_marginTop="100dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/quit"
+        android:text="@string/profileQuit"
+        android:backgroundTint="@color/delete_btn_color">
+
+    </Button>
+</LinearLayout>

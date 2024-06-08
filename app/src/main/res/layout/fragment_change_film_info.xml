@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ChangeFilmInfoFragment"
+    android:gravity="center_horizontal"
+    android:orientation="vertical">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center_horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/changeFilmInfoTitle"
+                android:text="@string/change_film_info_title"
+                android:textSize="24sp">
+
+            </TextView>
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:hint="@string/change_film_info_title_hint"
+                android:id="@+id/filmNameEditText">
+
+            </EditText>
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:hint="@string/change_film_info_short_desc_hint"
+                android:id="@+id/filmShortDescEditText">
+
+            </EditText>
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:hint="@string/change_film_info_desc_hint"
+                android:id="@+id/filmDescriptionEditText">
+
+            </EditText>
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:hint="@string/change_film_info_descURL_hint"
+                android:id="@+id/filmDescriptionURLEditText">
+
+            </EditText>
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:hint="@string/change_film_info_genre_hint"
+                android:id="@+id/filmGenreEditText">
+
+            </EditText>
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:inputType="number"
+                android:hint="@string/change_film_info_publish_year_hint"
+                android:id="@+id/filmPublishYearEditText">
+
+            </EditText>
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:inputType="numberDecimal"
+                android:hint="@string/change_film_info_rating_hint"
+                android:id="@+id/filmRatingEditText">
+
+            </EditText>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/change_film_info_poster">
+            </TextView>
+            <ImageView
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:src="@drawable/upload_image"
+                android:clickable="true"
+                android:id="@+id/changeFilmInfoPoster"
+                >
+
+            </ImageView>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_horizontal|center_vertical">
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/saveChanges"
+                    android:text="@string/change_film_info_save_changes_btn"
+                    android:layout_margin="10dp">
+                </Button>
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/discardChanges"
+                    android:text="@string/change_film_info_discard_changes_btn"
+                    android:layout_margin="10dp">
+
+                </Button>
+                <Button
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:id="@+id/deleteFilm"
+                    android:text="@string/change_film_info_delete_btn"
+                    android:background="@android:drawable/ic_menu_delete"
+                    android:backgroundTint="@color/delete_btn_color"
+                    android:visibility="gone"
+                    android:layout_margin="10dp">
+
+                </Button>
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>
