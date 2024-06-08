@@ -300,75 +300,81 @@ public class ChangeFilmInfoFragment extends Fragment {
     }
 
     private void deleteFilm() {
-        films.addListenerForSingleValueEvent(new ValueEventListener() {
+        ConfirmDialog confirmDialog = new ConfirmDialog(context, new ConfirmDialog.ConfirmDialogCallback() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                String nodeName = null;
-                if (snapshot.exists())
-                {
-                    for (DataSnapshot snapshot1: snapshot.getChildren())
-                    {
-                        if (snapshot1.exists()) {
-                            int temp = snapshot1.child("id").getValue(Integer.class);
-                            if (film.getId() == temp) {
-                                nodeName = snapshot1.getKey();
-                                break;
-                            }
-                        }
-                    }
-                    films.child(nodeName).removeValue();
-
-                    // отменить все показы этого фильма и вернуть деньги владельцам билетов
-                    ((MainActivity) getActivity()).loadCinemas(new MainActivity.onCinemasDataReceivedCallback() {
-                        @Override
-                        public void onDataReceived(List<Cinema> result) {
-                            Map<String, Integer> ticketReturn = new HashMap<>();
-                            for (Cinema cinema: result) {
-                                for (Show show: cinema.getShows()) {
-                                    if (show.getFilm_id() == film.getId()) {
-                                        for (Seat seat: show.getSeats()) {
-                                            String owner = seat.getOwner();
-                                            if (owner != null) {
-                                                if (ticketReturn.containsKey(owner)) {
-                                                    int currentReturn = ticketReturn.get(owner);
-                                                    ticketReturn.put(owner, currentReturn + seat.getPrice());
-                                                }
-                                                else {
-                                                    ticketReturn.put(owner, seat.getPrice());
-                                                }
-                                            }
-                                        }
-                                        cinemas.child("cinema" + cinema.getId()).child("shows").child("show" + show.getId()).removeValue();
+            public void onConfirmation() {
+                films.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        String nodeName = null;
+                        if (snapshot.exists())
+                        {
+                            for (DataSnapshot snapshot1: snapshot.getChildren())
+                            {
+                                if (snapshot1.exists()) {
+                                    int temp = snapshot1.child("id").getValue(Integer.class);
+                                    if (film.getId() == temp) {
+                                        nodeName = snapshot1.getKey();
+                                        break;
                                     }
                                 }
                             }
-                            for (String key: ticketReturn.keySet()) {
-                                users.child(key).child("balance").addListenerForSingleValueEvent(new ValueEventListener() {
-                                    @Override
-                                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                        if (snapshot.exists()) {
-                                            int currentBalance = snapshot.getValue(Integer.class);
-                                            users.child(key).child("balance").setValue(ticketReturn.get(key) + currentBalance);
+                            films.child(nodeName).removeValue();
+
+                            // отменить все показы этого фильма и вернуть деньги владельцам билетов
+                            ((MainActivity) getActivity()).loadCinemas(new MainActivity.onCinemasDataReceivedCallback() {
+                                @Override
+                                public void onDataReceived(List<Cinema> result) {
+                                    Map<String, Integer> ticketReturn = new HashMap<>();
+                                    for (Cinema cinema: result) {
+                                        for (Show show: cinema.getShows()) {
+                                            if (show.getFilm_id() == film.getId()) {
+                                                for (Seat seat: show.getSeats()) {
+                                                    String owner = seat.getOwner();
+                                                    if (owner != null) {
+                                                        if (ticketReturn.containsKey(owner)) {
+                                                            int currentReturn = ticketReturn.get(owner);
+                                                            ticketReturn.put(owner, currentReturn + seat.getPrice());
+                                                        }
+                                                        else {
+                                                            ticketReturn.put(owner, seat.getPrice());
+                                                        }
+                                                    }
+                                                }
+                                                cinemas.child("cinema" + cinema.getId()).child("shows").child("show" + show.getId()).removeValue();
+                                            }
                                         }
                                     }
+                                    for (String key: ticketReturn.keySet()) {
+                                        users.child(key).child("balance").addListenerForSingleValueEvent(new ValueEventListener() {
+                                            @Override
+                                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                                if (snapshot.exists()) {
+                                                    int currentBalance = snapshot.getValue(Integer.class);
+                                                    users.child(key).child("balance").setValue(ticketReturn.get(key) + currentBalance);
+                                                }
+                                            }
 
-                                    @Override
-                                    public void onCancelled(@NonNull DatabaseError error) {
+                                            @Override
+                                            public void onCancelled(@NonNull DatabaseError error) {
 
+                                            }
+                                        });
                                     }
-                                });
-                            }
+                                }
+                            });
                         }
-                    });
-                }
-                onBackPressed();
-            }
+                        onBackPressed();
+                    }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
 
+                    }
+                });
             }
         });
+        confirmDialog.showDialog("Подтвердите удаление", "Вы действительно хотите удалить фильм и все связанные с ним сеансы?");
     }
 
     private void onBackPressed() {

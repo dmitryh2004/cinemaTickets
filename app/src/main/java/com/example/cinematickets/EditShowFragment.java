@@ -205,48 +205,54 @@ public class EditShowFragment extends Fragment {
         binding.deleteShowBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Map<String, Integer> ticketReturn = new HashMap<>();
-                for (Seat seat: show.getSeats()) {
-                    String owner = seat.getOwner();
-                    if (owner != null) {
-                        if (ticketReturn.containsKey(owner)) {
-                            int currentReturn = ticketReturn.get(owner);
-                            ticketReturn.put(owner, currentReturn + seat.getPrice());
-                        }
-                        else {
-                            ticketReturn.put(owner, seat.getPrice());
-                        }
-                    }
-                }
-                for (String key: ticketReturn.keySet()) {
-                    users.child(key).child("balance").addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-                            if (snapshot.exists()) {
-                                int currentBalance = snapshot.getValue(Integer.class);
-                                users.child(key).child("balance").setValue(ticketReturn.get(key) + currentBalance);
+                ConfirmDialog confirmDialog = new ConfirmDialog(context, new ConfirmDialog.ConfirmDialogCallback() {
+                    @Override
+                    public void onConfirmation() {
+                        Map<String, Integer> ticketReturn = new HashMap<>();
+                        for (Seat seat: show.getSeats()) {
+                            String owner = seat.getOwner();
+                            if (owner != null) {
+                                if (ticketReturn.containsKey(owner)) {
+                                    int currentReturn = ticketReturn.get(owner);
+                                    ticketReturn.put(owner, currentReturn + seat.getPrice());
+                                }
+                                else {
+                                    ticketReturn.put(owner, seat.getPrice());
+                                }
                             }
                         }
+                        for (String key: ticketReturn.keySet()) {
+                            users.child(key).child("balance").addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                    if (snapshot.exists()) {
+                                        int currentBalance = snapshot.getValue(Integer.class);
+                                        users.child(key).child("balance").setValue(ticketReturn.get(key) + currentBalance);
+                                    }
+                                }
 
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError error) {
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError error) {
 
+                                }
+                            });
                         }
-                    });
-                }
-                for (Show temp: cinema.getShows()) {
-                    if (show.getId() == temp.getId()) {
-                        cinema.getShows().remove(temp);
-                        break;
-                    }
-                }
-                cinemas.child("cinema" + cinema.getId()).child("shows").child("show" + show.getId()).removeValue(new DatabaseReference.CompletionListener() {
-                    @Override
-                    public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
-                        Snackbar.make(binding.getRoot(), "Показ удален успешно. Деньги за билеты возвращены пользователям.", Snackbar.LENGTH_LONG).show();
-                        onBackPressed();
+                        for (Show temp: cinema.getShows()) {
+                            if (show.getId() == temp.getId()) {
+                                cinema.getShows().remove(temp);
+                                break;
+                            }
+                        }
+                        cinemas.child("cinema" + cinema.getId()).child("shows").child("show" + show.getId()).removeValue(new DatabaseReference.CompletionListener() {
+                            @Override
+                            public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
+                                Snackbar.make(binding.getRoot(), "Показ удален успешно. Деньги за билеты возвращены пользователям.", Snackbar.LENGTH_LONG).show();
+                                onBackPressed();
+                            }
+                        });
                     }
                 });
+                confirmDialog.showDialog("Подтвердите удаление", "Вы действительно хотите удалить этот сеанс?");
             }
         });
     }
@@ -577,11 +583,17 @@ public class EditShowFragment extends Fragment {
         binding.annulateTicketBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                show.getSeats().get(seatIndex).setOwner(null);
-                show.getSeats().get(seatIndex).setSold(false);
-                Snackbar.make(binding.getRoot(), "Билет на место (ряд " + (currentSeatRow + 1) + ", место " + (currentSeatCol + 1) + ") аннулирован. Сохраните показ для применения изменений.",
-                        Snackbar.LENGTH_LONG).show();
-                updateFragment();
+                ConfirmDialog confirmDialog = new ConfirmDialog(context, new ConfirmDialog.ConfirmDialogCallback() {
+                    @Override
+                    public void onConfirmation() {
+                        show.getSeats().get(seatIndex).setOwner(null);
+                        show.getSeats().get(seatIndex).setSold(false);
+                        Snackbar.make(binding.getRoot(), "Билет на место (ряд " + (currentSeatRow + 1) + ", место " + (currentSeatCol + 1) + ") аннулирован. Сохраните показ для применения изменений.",
+                                Snackbar.LENGTH_LONG).show();
+                        updateFragment();
+                    }
+                });
+                confirmDialog.showDialog("Подтвердите действие", "Вы действительно хотите аннулировать билет на место (ряд " + (currentSeatRow + 1) + ", место " + (currentSeatCol + 1) + ")?");
             }
         });
     }

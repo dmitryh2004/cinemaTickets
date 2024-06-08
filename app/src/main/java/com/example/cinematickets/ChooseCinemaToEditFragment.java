@@ -155,52 +155,58 @@ public class ChooseCinemaToEditFragment extends Fragment {
         binding.deleteCinemaBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Map<String, Integer> ticketReturn = new HashMap<>();
-                for (Show show: currentCinema.getShows()) { // вернуть деньги всем владельцам купленных мест
-                    for (Seat seat: show.getSeats()) {
-                        String owner = seat.getOwner();
-                        if (owner != null) {
-                            if (ticketReturn.containsKey(owner)) {
-                                int currentReturn = ticketReturn.get(owner);
-                                ticketReturn.put(owner, currentReturn + seat.getPrice());
-                            }
-                            else {
-                                ticketReturn.put(owner, seat.getPrice());
-                            }
-                        }
-                    }
-                }
-                for (String key: ticketReturn.keySet()) {
-                    users.child(key).child("balance").addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-                            if (snapshot.exists()) {
-                                int currentBalance = snapshot.getValue(Integer.class);
-                                users.child(key).child("balance").setValue(ticketReturn.get(key) + currentBalance);
-                            }
-                        }
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError error) {
-
-                        }
-                    });
-                }
-                // найти и удалить записи о кинотеатре из базы данных
-                cinemas.child("cinema" + currentCinema.getId()).removeValue(new DatabaseReference.CompletionListener() {
+                ConfirmDialog confirmDialog = new ConfirmDialog(context, new ConfirmDialog.ConfirmDialogCallback() {
                     @Override
-                    public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
-                        Snackbar.make(binding.getRoot(), "Сведения о кинотеатре удалены успешно.", Snackbar.LENGTH_LONG).show();
+                    public void onConfirmation() {
+                        Map<String, Integer> ticketReturn = new HashMap<>();
+                        for (Show show: currentCinema.getShows()) { // вернуть деньги всем владельцам купленных мест
+                            for (Seat seat: show.getSeats()) {
+                                String owner = seat.getOwner();
+                                if (owner != null) {
+                                    if (ticketReturn.containsKey(owner)) {
+                                        int currentReturn = ticketReturn.get(owner);
+                                        ticketReturn.put(owner, currentReturn + seat.getPrice());
+                                    }
+                                    else {
+                                        ticketReturn.put(owner, seat.getPrice());
+                                    }
+                                }
+                            }
+                        }
+                        for (String key: ticketReturn.keySet()) {
+                            users.child(key).child("balance").addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                    if (snapshot.exists()) {
+                                        int currentBalance = snapshot.getValue(Integer.class);
+                                        users.child(key).child("balance").setValue(ticketReturn.get(key) + currentBalance);
+                                    }
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError error) {
+
+                                }
+                            });
+                        }
+                        // найти и удалить записи о кинотеатре из базы данных
+                        cinemas.child("cinema" + currentCinema.getId()).removeValue(new DatabaseReference.CompletionListener() {
+                            @Override
+                            public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
+                                Snackbar.make(binding.getRoot(), "Сведения о кинотеатре удалены успешно.", Snackbar.LENGTH_LONG).show();
+                            }
+                        });
+                        // повторно загрузить данные о кинотеатрах
+                        ((MainActivity) activityReference).loadCinemas(new MainActivity.onCinemasDataReceivedCallback() {
+                            @Override
+                            public void onDataReceived(List<Cinema> result) {
+                                cinemaList = result;
+                                updateFragment();
+                            }
+                        });
                     }
                 });
-                // повторно загрузить данные о кинотеатрах
-                ((MainActivity) activityReference).loadCinemas(new MainActivity.onCinemasDataReceivedCallback() {
-                    @Override
-                    public void onDataReceived(List<Cinema> result) {
-                        cinemaList = result;
-                        updateFragment();
-                    }
-                });
+                confirmDialog.showDialog("Подтвердите удаление", "Вы действительно хотите удалить кинотеатр " + currentCinema.getName() + " и все связанные с ним кинозалы и сеансы?");
             }
         });
         binding.saveCinemaBtn.setOnClickListener(new View.OnClickListener() {
@@ -322,55 +328,61 @@ public class ChooseCinemaToEditFragment extends Fragment {
             binding.deleteShowroomBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    int index = -1;
-                    for (Showroom showroom: currentCinema.getShowrooms()) {
-                        if (showroom.getId() == currentShowroom.getId()) {
-                            index = currentCinema.getShowrooms().indexOf(showroom);
-                            break;
-                        }
-                    }
-                    if (index != -1) {
-                        Map<String, Integer> ticketReturn = new HashMap<>();
-                        for (Show show: currentCinema.getShows()) {
-                            if (show.getRoom_id() == currentShowroom.getId()) {
-                                for (Seat seat: show.getSeats()) {
-                                    String owner = seat.getOwner();
-                                    if (owner != null) {
-                                        if (ticketReturn.containsKey(owner)) {
-                                            int currentReturn = ticketReturn.get(owner);
-                                            ticketReturn.put(owner, currentReturn + seat.getPrice());
-                                        }
-                                        else {
-                                            ticketReturn.put(owner, seat.getPrice());
-                                        }
-                                    }
+                    ConfirmDialog confirmDialog = new ConfirmDialog(context, new ConfirmDialog.ConfirmDialogCallback() {
+                        @Override
+                        public void onConfirmation() {
+                            int index = -1;
+                            for (Showroom showroom: currentCinema.getShowrooms()) {
+                                if (showroom.getId() == currentShowroom.getId()) {
+                                    index = currentCinema.getShowrooms().indexOf(showroom);
+                                    break;
                                 }
-                                cinemas.child("cinema" + currentCinema.getId()).child("shows").child("show" + show.getId()).removeValue();
-                                currentCinema.getShows().remove(show);
                             }
-                        }
-                        for (String key: ticketReturn.keySet()) {
-                            users.child(key).child("balance").addListenerForSingleValueEvent(new ValueEventListener() {
-                                @Override
-                                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                    if (snapshot.exists()) {
-                                        int currentBalance = snapshot.getValue(Integer.class);
-                                        users.child(key).child("balance").setValue(ticketReturn.get(key) + currentBalance);
+                            if (index != -1) {
+                                Map<String, Integer> ticketReturn = new HashMap<>();
+                                for (Show show: currentCinema.getShows()) {
+                                    if (show.getRoom_id() == currentShowroom.getId()) {
+                                        for (Seat seat: show.getSeats()) {
+                                            String owner = seat.getOwner();
+                                            if (owner != null) {
+                                                if (ticketReturn.containsKey(owner)) {
+                                                    int currentReturn = ticketReturn.get(owner);
+                                                    ticketReturn.put(owner, currentReturn + seat.getPrice());
+                                                }
+                                                else {
+                                                    ticketReturn.put(owner, seat.getPrice());
+                                                }
+                                            }
+                                        }
+                                        cinemas.child("cinema" + currentCinema.getId()).child("shows").child("show" + show.getId()).removeValue();
+                                        currentCinema.getShows().remove(show);
                                     }
                                 }
+                                for (String key: ticketReturn.keySet()) {
+                                    users.child(key).child("balance").addListenerForSingleValueEvent(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                            if (snapshot.exists()) {
+                                                int currentBalance = snapshot.getValue(Integer.class);
+                                                users.child(key).child("balance").setValue(ticketReturn.get(key) + currentBalance);
+                                            }
+                                        }
 
-                                @Override
-                                public void onCancelled(@NonNull DatabaseError error) {
+                                        @Override
+                                        public void onCancelled(@NonNull DatabaseError error) {
 
+                                        }
+                                    });
                                 }
-                            });
+                                currentCinema.getShowrooms().remove(index);
+                                cinemas.child("cinema" + currentCinema.getId()).child("showrooms").child("showroom" + currentShowroom.getId()).removeValue();
+                                Snackbar.make(binding.getRoot(), "Кинозал и все показы в этом зале удалены.", Snackbar.LENGTH_LONG).show();
+                            }
+                            else Snackbar.make(binding.getRoot(), "Ошибка при удалении кинозала.", Snackbar.LENGTH_LONG).show();
+                            updateCinemaLayout();
                         }
-                        currentCinema.getShowrooms().remove(index);
-                        cinemas.child("cinema" + currentCinema.getId()).child("showrooms").child("showroom" + currentShowroom.getId()).removeValue();
-                        Snackbar.make(binding.getRoot(), "Кинозал и все показы в этом зале удалены.", Snackbar.LENGTH_LONG).show();
-                    }
-                    else Snackbar.make(binding.getRoot(), "Ошибка при удалении кинозала.", Snackbar.LENGTH_LONG).show();
-                    updateCinemaLayout();
+                    });
+                    confirmDialog.showDialog("Подтвердите удаление", "Вы действительно хотите удалить кинозал " + currentShowroom.getName() + " и все связанные с ним сеансы?");
                 }
             });
             binding.saveShowroomBtn.setOnClickListener(new View.OnClickListener() {
