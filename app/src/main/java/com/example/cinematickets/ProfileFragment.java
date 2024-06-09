@@ -11,9 +11,14 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.view.menu.MenuBuilder;
+import androidx.core.app.ActivityOptionsCompat;
 import androidx.fragment.app.Fragment;
 
 import android.provider.MediaStore;
@@ -323,16 +328,12 @@ public class ProfileFragment extends Fragment {
                     Snackbar.make(binding.getRoot(), "Введите номер телефона", Snackbar.LENGTH_SHORT).show();
                     return;
                 }
-                FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
-                if (currentUser != null)
-                {
-                    users.child(uid).child("name").setValue(name);
-                    users.child(uid).child("phone").setValue(phone);
-                }
-                else {
-                    Snackbar.make(binding.getRoot(), "Не удалось обновить данные профиля.", Snackbar.LENGTH_LONG).show();
-                    dialog.dismiss();
-                }
+                user.setName(name);
+                user.setPhone(phone);
+                binding.profileName.setText(name);
+                binding.profilePhone.setText(phone);
+                users.child(uid).child("name").setValue(name);
+                users.child(uid).child("phone").setValue(phone);
             }
         });
         dialog.show();

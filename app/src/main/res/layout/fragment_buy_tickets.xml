@@ -78,11 +78,13 @@
 
                 </TextView>
             </LinearLayout>
-            <HorizontalScrollView
+            <com.example.cinematickets.MHorizontalScrollView
+                android:id="@+id/seatsHSV"
                 android:layout_width="match_parent"
                 android:layout_height="300dp"
                 android:layout_margin="10dp">
                 <ScrollView
+                    android:id="@+id/seatsVSV"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical">
@@ -96,7 +98,7 @@
                     </LinearLayout>
                 </ScrollView>
 
-            </HorizontalScrollView>
+            </com.example.cinematickets.MHorizontalScrollView>
 
             <LinearLayout
                 android:layout_width="match_parent"

@@ -127,11 +127,15 @@ public class FilmsListAdapter extends BaseAdapter {
         if (poster != null) {
             imageView.setImageBitmap(poster);
             ImageView placeholder = (ImageView) view.findViewById(R.id.filmPosterAnimation);
-            Animation anim = AnimationUtils.loadAnimation(context, R.anim.film_image_placeholder_animation);
-            anim.setFillAfter(true);
-            placeholder.startAnimation(anim);
+            if (placeholder.getAnimation() == null) {
+                Animation anim = AnimationUtils.loadAnimation(context, R.anim.film_image_placeholder_animation);
+                anim.setFillAfter(true);
+                placeholder.startAnimation(anim);
+            }
+            else {
+                placeholder.setVisibility(View.GONE);
+            }
         }
-
         if (current_user_is_admin)
             ((Button) view.findViewById(R.id.editCinemaBtn)).setVisibility(View.VISIBLE);
 

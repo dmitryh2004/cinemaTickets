@@ -321,6 +321,8 @@ public class ChangeFilmInfoFragment extends Fragment {
                             }
                             films.child(nodeName).removeValue();
 
+                            storage.child("posters/film" + film.getId() + "_poster.png").delete();
+
                             // отменить все показы этого фильма и вернуть деньги владельцам билетов
                             ((MainActivity) getActivity()).loadCinemas(new MainActivity.onCinemasDataReceivedCallback() {
                                 @Override

@@ -116,6 +116,7 @@ public class SelectCinemaFragment extends Fragment {
                 for (Show show: cinema.getShows()) {
                     if ((show.getFilm_id() == film.getId()) && show.hasAvailableSeats(uid)) {
                         cinemasWithFilm.add(cinema);
+                        break;
                     }
                 }
             }

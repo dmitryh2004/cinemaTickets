@@ -116,6 +116,9 @@ public class ChooseCinemaToEditFragment extends Fragment {
                     largestId = Math.max(largestId, cinema.getId());
                 }
                 currentCinema.setId(largestId + 1);
+                binding.showroomNameEditText.setText(null);
+                binding.showroomRows.setText(null);
+                binding.showroomCols.setText(null);
                 updateCinemaLayout();
             }
         });
@@ -273,6 +276,9 @@ public class ChooseCinemaToEditFragment extends Fragment {
                 @Override
                 public void onNothingSelected(AdapterView<?> parent) {
                     binding.editShowroomLayout.setVisibility(View.GONE);
+                    binding.showroomNameEditText.setText(null);
+                    binding.showroomCols.setText(null);
+                    binding.showroomRows.setText(null);
                 }
             });
             binding.addShowroomBtn.setOnClickListener(new View.OnClickListener() {

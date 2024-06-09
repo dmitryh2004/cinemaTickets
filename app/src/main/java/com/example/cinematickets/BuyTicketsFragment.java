@@ -230,6 +230,12 @@ public class BuyTicketsFragment extends Fragment {
         callback.onComplete();
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        updateFragment();
+    }
+
     private void updateFragment() {
         readFromDatabase(new OnDatabaseReadCallback() {
             @Override
@@ -264,6 +270,7 @@ public class BuyTicketsFragment extends Fragment {
                         onBackPressed();
                     }
                     else {
+                        binding.seatsHSV.sv = binding.seatsVSV;
                         binding.buyTicketsYourBalance.setText(String.valueOf(user.getBalance()));
                         binding.buyTicketsCinema.setText(cinema.getName());
                         binding.buyTicketsShow.setText(show.getDate());

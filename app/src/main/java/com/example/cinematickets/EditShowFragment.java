@@ -157,6 +157,7 @@ public class EditShowFragment extends Fragment {
     }
 
     private void loadEditShowFragment() {
+        binding.seatsHSV.sv = binding.seatsVSV;
         binding.editExistingShowLayout.setVisibility(View.VISIBLE);
         this.rows = selectedShowroom.getRows();
         this.cols = selectedShowroom.getCols();
