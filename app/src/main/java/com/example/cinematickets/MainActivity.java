@@ -9,7 +9,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 
 import com.example.cinematickets.databinding.ActivityMainBinding;
 import com.google.firebase.database.DataSnapshot;

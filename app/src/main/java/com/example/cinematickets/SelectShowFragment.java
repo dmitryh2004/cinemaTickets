@@ -93,14 +93,16 @@ public class SelectShowFragment extends Fragment {
                     });
                 }
                 else {
-                    Snackbar.make(binding.getRoot(), "Произошла ошибка при загрузке данных.", Snackbar.LENGTH_LONG).show();
+                    Snackbar.make(binding.getRoot(), "Произошла ошибка при загрузке данных.",
+                            Snackbar.LENGTH_LONG).show();
                     onBackPressed();
                 }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Snackbar.make(binding.getRoot(), "Произошла ошибка при загрузке данных.", Snackbar.LENGTH_LONG).show();
+                Snackbar.make(binding.getRoot(), "Произошла ошибка при загрузке данных.",
+                        Snackbar.LENGTH_LONG).show();
                 onBackPressed();
             }
         });

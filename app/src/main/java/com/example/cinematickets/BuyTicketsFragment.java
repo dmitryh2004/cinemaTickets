@@ -249,7 +249,8 @@ public class BuyTicketsFragment extends Fragment {
                     }
                 }
                 if (!updated) {
-                    Snackbar.make(binding.getRoot(), "Не удалось загрузить информацию о показе фильма.", Snackbar.LENGTH_LONG).show();
+                    Snackbar.make(binding.getRoot(), "Не удалось загрузить информацию о показе фильма.",
+                            Snackbar.LENGTH_LONG).show();
                     onBackPressed();
                 }
                 else {
@@ -266,7 +267,8 @@ public class BuyTicketsFragment extends Fragment {
                         }
                     }
                     if ((cols == 0) || (rows == 0)) {
-                        Snackbar.make(binding.getRoot(), "Не удалось загрузить информацию о показе фильма.", Snackbar.LENGTH_LONG).show();
+                        Snackbar.make(binding.getRoot(), "Не удалось загрузить информацию о показе фильма.",
+                                Snackbar.LENGTH_LONG).show();
                         onBackPressed();
                     }
                     else {

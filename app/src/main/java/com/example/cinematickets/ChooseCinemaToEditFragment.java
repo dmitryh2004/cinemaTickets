@@ -16,7 +16,6 @@ import android.widget.AdapterView;
 import android.widget.EditText;
 
 import com.example.cinematickets.databinding.FragmentChooseCinemaToEditBinding;
-import com.example.cinematickets.databinding.FragmentProfileBinding;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -127,7 +126,8 @@ public class ChooseCinemaToEditFragment extends Fragment {
             public void onClick(View v) {
                 binding.cinemaSpinnerLayout.setVisibility(View.VISIBLE);
                 binding.editCinemaLayoutTitle.setVisibility(View.VISIBLE);
-                Snackbar.make(binding.getRoot(), "Изменения для кинотеатра " + currentCinema.getName() + " отменены.", Snackbar.LENGTH_LONG).show();
+                Snackbar.make(binding.getRoot(), "Изменения для кинотеатра " + currentCinema.getName() +
+                        " отменены.", Snackbar.LENGTH_LONG).show();
                 currentCinema = null;
                 updateFragment();
             }
@@ -193,10 +193,12 @@ public class ChooseCinemaToEditFragment extends Fragment {
                             });
                         }
                         // найти и удалить записи о кинотеатре из базы данных
-                        cinemas.child("cinema" + currentCinema.getId()).removeValue(new DatabaseReference.CompletionListener() {
+                        cinemas.child("cinema" + currentCinema.getId())
+                                .removeValue(new DatabaseReference.CompletionListener() {
                             @Override
                             public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
-                                Snackbar.make(binding.getRoot(), "Сведения о кинотеатре удалены успешно.", Snackbar.LENGTH_LONG).show();
+                                Snackbar.make(binding.getRoot(), "Сведения о кинотеатре удалены успешно.",
+                                        Snackbar.LENGTH_LONG).show();
                             }
                         });
                         // повторно загрузить данные о кинотеатрах
@@ -209,7 +211,9 @@ public class ChooseCinemaToEditFragment extends Fragment {
                         });
                     }
                 });
-                confirmDialog.showDialog("Подтвердите удаление", "Вы действительно хотите удалить кинотеатр " + currentCinema.getName() + " и все связанные с ним кинозалы и сеансы?");
+                confirmDialog.showDialog("Подтвердите удаление",
+                        "Вы действительно хотите удалить кинотеатр " + currentCinema.getName() +
+                                " и все связанные с ним кинозалы и сеансы?");
             }
         });
         binding.saveCinemaBtn.setOnClickListener(new View.OnClickListener() {
@@ -217,8 +221,16 @@ public class ChooseCinemaToEditFragment extends Fragment {
             public void onClick(View v) {
                 currentCinema.setName(binding.cinemaNameEditText.getText().toString());
                 currentCinema.setAddress(binding.cinemaAddressEditText.getText().toString());
-                currentCinema.setLatitude(Float.parseFloat(binding.cinemaLatitudeEditText.getText().toString().replace(",", ".")));
-                currentCinema.setLongitude(Float.parseFloat(binding.cinemaLongitudeEditText.getText().toString().replace(",", ".")));
+                currentCinema.setLatitude(Float.parseFloat(binding.cinemaLatitudeEditText.getText()
+                        .toString().replace(",", ".")));
+                currentCinema.setLongitude(Float.parseFloat(binding.cinemaLongitudeEditText.getText()
+                        .toString().replace(",", ".")));
+                if ((Math.abs(currentCinema.getLatitude()) >= 90.0) || (Math.abs(currentCinema.getLongitude()) >= 180.0))
+                {
+                    Snackbar.make(binding.getRoot(), "Введены неправильные координаты",
+                            Snackbar.LENGTH_LONG).show();
+                    return;
+                }
                 DatabaseReference cinemaRef = cinemas.child("cinema" + currentCinema.getId());
                 cinemaRef.child("id").setValue(currentCinema.getId());
                 cinemaRef.child("name").setValue(currentCinema.getName());
@@ -255,8 +267,10 @@ public class ChooseCinemaToEditFragment extends Fragment {
             else {
                 binding.cinemaAddressEditText.setText(null);
             }
-            binding.cinemaLatitudeEditText.setText(String.format("%.6f", currentCinema.getLatitude()).replace(",", "."));
-            binding.cinemaLongitudeEditText.setText(String.format("%.6f", currentCinema.getLongitude()).replace(",", "."));
+            binding.cinemaLatitudeEditText.setText(String.format("%.6f", currentCinema.getLatitude())
+                    .replace(",", "."));
+            binding.cinemaLongitudeEditText.setText(String.format("%.6f", currentCinema.getLongitude())
+                    .replace(",", "."));
 
             ShowroomSpinnerAdapter showroomSpinnerAdapter = new ShowroomSpinnerAdapter(this.context,
                     R.layout.showroom_spinner_item,
@@ -321,9 +335,11 @@ public class ChooseCinemaToEditFragment extends Fragment {
                             if (!binding.cinemaAddressEditText.getText().toString().isEmpty())
                                 currentCinema.setAddress(binding.cinemaAddressEditText.getText().toString());
                             if (!binding.cinemaLatitudeEditText.getText().toString().isEmpty())
-                                currentCinema.setLatitude(Float.parseFloat(binding.cinemaLatitudeEditText.getText().toString().replace(",", ".")));
+                                currentCinema.setLatitude(Float.parseFloat(binding.cinemaLatitudeEditText
+                                        .getText().toString().replace(",", ".")));
                             if (!binding.cinemaLongitudeEditText.getText().toString().isEmpty())
-                                currentCinema.setLongitude(Float.parseFloat(binding.cinemaLongitudeEditText.getText().toString().replace(",", ".")));
+                                currentCinema.setLongitude(Float.parseFloat(binding.cinemaLongitudeEditText
+                                        .getText().toString().replace(",", ".")));
 
                             updateCinemaLayout();
                         }
@@ -360,17 +376,20 @@ public class ChooseCinemaToEditFragment extends Fragment {
                                                 }
                                             }
                                         }
-                                        cinemas.child("cinema" + currentCinema.getId()).child("shows").child("show" + show.getId()).removeValue();
+                                        cinemas.child("cinema" + currentCinema.getId()).child("shows")
+                                                .child("show" + show.getId()).removeValue();
                                         currentCinema.getShows().remove(show);
                                     }
                                 }
                                 for (String key: ticketReturn.keySet()) {
-                                    users.child(key).child("balance").addListenerForSingleValueEvent(new ValueEventListener() {
+                                    users.child(key).child("balance")
+                                            .addListenerForSingleValueEvent(new ValueEventListener() {
                                         @Override
                                         public void onDataChange(@NonNull DataSnapshot snapshot) {
                                             if (snapshot.exists()) {
                                                 int currentBalance = snapshot.getValue(Integer.class);
-                                                users.child(key).child("balance").setValue(ticketReturn.get(key) + currentBalance);
+                                                users.child(key).child("balance").setValue(ticketReturn.get(key) +
+                                                        currentBalance);
                                             }
                                         }
 
@@ -381,14 +400,18 @@ public class ChooseCinemaToEditFragment extends Fragment {
                                     });
                                 }
                                 currentCinema.getShowrooms().remove(index);
-                                cinemas.child("cinema" + currentCinema.getId()).child("showrooms").child("showroom" + currentShowroom.getId()).removeValue();
-                                Snackbar.make(binding.getRoot(), "Кинозал и все показы в этом зале удалены.", Snackbar.LENGTH_LONG).show();
+                                cinemas.child("cinema" + currentCinema.getId()).child("showrooms")
+                                        .child("showroom" + currentShowroom.getId()).removeValue();
+                                Snackbar.make(binding.getRoot(), "Кинозал и все показы в этом зале удалены.",
+                                        Snackbar.LENGTH_LONG).show();
                             }
                             else Snackbar.make(binding.getRoot(), "Ошибка при удалении кинозала.", Snackbar.LENGTH_LONG).show();
                             updateCinemaLayout();
                         }
                     });
-                    confirmDialog.showDialog("Подтвердите удаление", "Вы действительно хотите удалить кинозал " + currentShowroom.getName() + " и все связанные с ним сеансы?");
+                    confirmDialog.showDialog("Подтвердите удаление",
+                            "Вы действительно хотите удалить кинозал " + currentShowroom.getName() +
+                                    " и все связанные с ним сеансы?");
                 }
             });
             binding.saveShowroomBtn.setOnClickListener(new View.OnClickListener() {
@@ -400,9 +423,11 @@ public class ChooseCinemaToEditFragment extends Fragment {
                     if (!binding.cinemaAddressEditText.getText().toString().isEmpty())
                         currentCinema.setAddress(binding.cinemaAddressEditText.getText().toString());
                     if (!binding.cinemaLatitudeEditText.getText().toString().isEmpty())
-                        currentCinema.setLatitude(Float.parseFloat(binding.cinemaLatitudeEditText.getText().toString().replace(",", ".")));
+                        currentCinema.setLatitude(Float.parseFloat(binding.cinemaLatitudeEditText.getText()
+                                .toString().replace(",", ".")));
                     if (!binding.cinemaLongitudeEditText.getText().toString().isEmpty())
-                        currentCinema.setLongitude(Float.parseFloat(binding.cinemaLongitudeEditText.getText().toString().replace(",", ".")));
+                        currentCinema.setLongitude(Float.parseFloat(binding.cinemaLongitudeEditText.getText()
+                                .toString().replace(",", ".")));
 
                     int index = -1;
                     for (Showroom showroom: currentCinema.getShowrooms()) {

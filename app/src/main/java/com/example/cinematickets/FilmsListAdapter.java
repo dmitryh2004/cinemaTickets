@@ -109,7 +109,8 @@ public class FilmsListAdapter extends BaseAdapter {
         });
 
         if (f.getEarliestDate() != null)
-            ((TextView) view.findViewById(R.id.filmDate)).setText(f.getEarliestDate().format(DateTimeFormatter.ofPattern("dd.MM.yy HH:mm")));
+            ((TextView) view.findViewById(R.id.filmDate)).setText(f.getEarliestDate()
+                    .format(DateTimeFormatter.ofPattern("dd.MM.yy HH:mm")));
 
         Cinema earliestCinema = null;
         for (Cinema cinema: cinemaList) {

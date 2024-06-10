@@ -343,17 +343,20 @@ public class ChangeFilmInfoFragment extends Fragment {
                                                         }
                                                     }
                                                 }
-                                                cinemas.child("cinema" + cinema.getId()).child("shows").child("show" + show.getId()).removeValue();
+                                                cinemas.child("cinema" + cinema.getId()).child("shows")
+                                                        .child("show" + show.getId()).removeValue();
                                             }
                                         }
                                     }
                                     for (String key: ticketReturn.keySet()) {
-                                        users.child(key).child("balance").addListenerForSingleValueEvent(new ValueEventListener() {
+                                        users.child(key).child("balance")
+                                                .addListenerForSingleValueEvent(new ValueEventListener() {
                                             @Override
                                             public void onDataChange(@NonNull DataSnapshot snapshot) {
                                                 if (snapshot.exists()) {
                                                     int currentBalance = snapshot.getValue(Integer.class);
-                                                    users.child(key).child("balance").setValue(ticketReturn.get(key) + currentBalance);
+                                                    users.child(key).child("balance").setValue(ticketReturn.get(key) +
+                                                            currentBalance);
                                                 }
                                             }
 
@@ -376,7 +379,8 @@ public class ChangeFilmInfoFragment extends Fragment {
                 });
             }
         });
-        confirmDialog.showDialog("Подтвердите удаление", "Вы действительно хотите удалить фильм и все связанные с ним сеансы?");
+        confirmDialog.showDialog("Подтвердите удаление",
+                "Вы действительно хотите удалить фильм и все связанные с ним сеансы?");
     }
 
     private void onBackPressed() {

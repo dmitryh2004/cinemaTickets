@@ -11,8 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.cinematickets.databinding.FragmentAuthorBinding;
-import com.example.cinematickets.databinding.FragmentFilmDescBinding;
-import com.google.android.material.snackbar.Snackbar;
 
 public class AuthorFragment extends Fragment {
     private FragmentAuthorBinding binding;

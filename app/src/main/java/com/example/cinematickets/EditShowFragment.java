@@ -9,7 +9,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import android.provider.ContactsContract;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -179,13 +178,15 @@ public class EditShowFragment extends Fragment {
                     DateTimeFormatter timeFormat = DateTimeFormatter.ofPattern("dd.MM.yy HH:mm");
                     LocalDateTime time = LocalDateTime.parse(dateTimeInput, timeFormat);
                     if (time.isBefore(LocalDateTime.now())) {
-                        Snackbar.make(binding.getRoot(), "Вы не можете запланировать показ в прошлом.", Snackbar.LENGTH_LONG).show();
+                        Snackbar.make(binding.getRoot(), "Вы не можете запланировать показ в прошлом.",
+                                Snackbar.LENGTH_LONG).show();
                         return;
                     }
                     show.setDate(dateTimeInput);
 
                     //сохранение в бд
-                    DatabaseReference showRef = cinemas.child("cinema" + cinema.getId()).child("shows").child("show" + show.getId());
+                    DatabaseReference showRef = cinemas.child("cinema" + cinema.getId())
+                            .child("shows").child("show" + show.getId());
                     showRef.child("id").setValue(show.getId());
                     showRef.child("room_id").setValue(show.getRoom_id());
                     showRef.child("film_id").setValue(show.getFilm_id());
@@ -244,16 +245,20 @@ public class EditShowFragment extends Fragment {
                                 break;
                             }
                         }
-                        cinemas.child("cinema" + cinema.getId()).child("shows").child("show" + show.getId()).removeValue(new DatabaseReference.CompletionListener() {
+                        cinemas.child("cinema" + cinema.getId()).child("shows")
+                                .child("show" + show.getId()).removeValue(new DatabaseReference.CompletionListener() {
                             @Override
                             public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
-                                Snackbar.make(binding.getRoot(), "Показ удален успешно. Деньги за билеты возвращены пользователям.", Snackbar.LENGTH_LONG).show();
+                                Snackbar.make(binding.getRoot(),
+                                        "Показ удален успешно. Деньги за билеты возвращены пользователям.",
+                                        Snackbar.LENGTH_LONG).show();
                                 onBackPressed();
                             }
                         });
                     }
                 });
-                confirmDialog.showDialog("Подтвердите удаление", "Вы действительно хотите удалить этот сеанс?");
+                confirmDialog.showDialog("Подтвердите удаление",
+                        "Вы действительно хотите удалить этот сеанс?");
             }
         });
     }
@@ -301,7 +306,8 @@ public class EditShowFragment extends Fragment {
                     DateTimeFormatter timeFormat = DateTimeFormatter.ofPattern("dd.MM.yy HH:mm");
                     LocalDateTime time = LocalDateTime.parse(dateTimeInput, timeFormat);
                     if (time.isBefore(LocalDateTime.now())) {
-                        Snackbar.make(binding.getRoot(), "Вы не можете запланировать показ в прошлом.", Snackbar.LENGTH_LONG).show();
+                        Snackbar.make(binding.getRoot(), "Вы не можете запланировать показ в прошлом.",
+                                Snackbar.LENGTH_LONG).show();
                         return;
                     }
                     int basePrice = Integer.parseInt(basePriceInput);
@@ -567,7 +573,8 @@ public class EditShowFragment extends Fragment {
                     int price = Integer.parseInt(priceInput);
                     if (price > 0) {
                         show.getSeats().get(seatIndex).setPrice(price);
-                        Snackbar.make(binding.getRoot(), "Цена места (ряд " + (currentSeatRow + 1) + ", место " + (currentSeatCol + 1) + ") успешно изменена.",
+                        Snackbar.make(binding.getRoot(), "Цена места (ряд " + (currentSeatRow + 1) +
+                                        ", место " + (currentSeatCol + 1) + ") успешно изменена.",
                                 Snackbar.LENGTH_LONG).show();
                         updateFragment();
                     }
@@ -589,12 +596,15 @@ public class EditShowFragment extends Fragment {
                     public void onConfirmation() {
                         show.getSeats().get(seatIndex).setOwner(null);
                         show.getSeats().get(seatIndex).setSold(false);
-                        Snackbar.make(binding.getRoot(), "Билет на место (ряд " + (currentSeatRow + 1) + ", место " + (currentSeatCol + 1) + ") аннулирован. Сохраните показ для применения изменений.",
+                        Snackbar.make(binding.getRoot(), "Билет на место (ряд " + (currentSeatRow + 1) +
+                                        ", место " + (currentSeatCol + 1) + ") аннулирован. Сохраните показ для применения изменений.",
                                 Snackbar.LENGTH_LONG).show();
                         updateFragment();
                     }
                 });
-                confirmDialog.showDialog("Подтвердите действие", "Вы действительно хотите аннулировать билет на место (ряд " + (currentSeatRow + 1) + ", место " + (currentSeatCol + 1) + ")?");
+                confirmDialog.showDialog("Подтвердите действие",
+                        "Вы действительно хотите аннулировать билет на место (ряд " +
+                                (currentSeatRow + 1) + ", место " + (currentSeatCol + 1) + ")?");
             }
         });
     }

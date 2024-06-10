@@ -11,32 +11,21 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 
-import androidx.activity.result.ActivityResult;
-import androidx.activity.result.ActivityResultCallback;
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.view.menu.MenuBuilder;
-import androidx.core.app.ActivityOptionsCompat;
 import androidx.fragment.app.Fragment;
 
 import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 
-import com.example.cinematickets.databinding.FragmentAuthorBinding;
 import com.example.cinematickets.databinding.FragmentProfileBinding;
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.snackbar.Snackbar;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -143,7 +132,8 @@ public class ProfileFragment extends Fragment {
                         }
                     }
                     else {
-                        Snackbar.make(binding.getRoot(), "Не удалось загрузить информацию о профиле.", Snackbar.LENGTH_LONG).show();
+                        Snackbar.make(binding.getRoot(), "Не удалось загрузить информацию о профиле.",
+                                Snackbar.LENGTH_LONG).show();
                         onBackPressed();
                     }
                 }
@@ -163,7 +153,8 @@ public class ProfileFragment extends Fragment {
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(getContext(), RegistrationActivity.class);
-                    SharedPreferences sharedPreferences = getActivity().getSharedPreferences("AccountData", Context.MODE_PRIVATE);
+                    SharedPreferences sharedPreferences = getActivity()
+                            .getSharedPreferences("AccountData", Context.MODE_PRIVATE);
                     SharedPreferences.Editor editor = sharedPreferences.edit();
                     editor.putString("email", null);
                     editor.putString("password", null);
@@ -227,7 +218,9 @@ public class ProfileFragment extends Fragment {
                                     users.child(uid).child("promocodesUsage").child(promo).setValue(1);
                                     user.setBalance(user.getBalance() + amount);
                                     users.child(uid).child("balance").setValue(user.getBalance());
-                                    Snackbar.make(binding.getRoot(), "Промокод применен успешно (число использований: " + 1 + ")", Snackbar.LENGTH_LONG).show();
+                                    Snackbar.make(binding.getRoot(),
+                                            "Промокод применен успешно (число использований: " + 1 + ")",
+                                            Snackbar.LENGTH_LONG).show();
                                     binding.profileBalance.setText(String.valueOf(user.getBalance()));
                                 }
 
@@ -235,7 +228,9 @@ public class ProfileFragment extends Fragment {
                                     users.child(uid).child("promocodesUsage").child(promo).setValue(uses + 1);
                                     user.setBalance(user.getBalance() + amount);
                                     users.child(uid).child("balance").setValue(user.getBalance());
-                                    Snackbar.make(binding.getRoot(), "Промокод применен успешно (число использований: " + (uses + 1) + ")", Snackbar.LENGTH_LONG).show();
+                                    Snackbar.make(binding.getRoot(),
+                                            "Промокод применен успешно (число использований: " +
+                                                    (uses + 1) + ")", Snackbar.LENGTH_LONG).show();
                                     binding.profileBalance.setText(String.valueOf(user.getBalance()));
                                 }
                                 @Override
@@ -244,12 +239,15 @@ public class ProfileFragment extends Fragment {
                                         if (snapshot.child("admin").getValue(Boolean.class) == false) {
                                             if (snapshot.child("promocodesUsage").exists()) {
                                                 if (snapshot.child("promocodesUsage").child(promo).exists()) {
-                                                    int uses = snapshot.child("promocodesUsage").child(promo).getValue(Integer.class);
+                                                    int uses = snapshot.child("promocodesUsage")
+                                                            .child(promo).getValue(Integer.class);
                                                     if (uses < maxUses) {
                                                         usePromocode(uses);
                                                     }
                                                     else {
-                                                        Snackbar.make(binding.getRoot(), "Уже достигнуто максимальное число использований промокода", Snackbar.LENGTH_LONG).show();
+                                                        Snackbar.make(binding.getRoot(),
+                                                                "Уже достигнуто максимальное число использований промокода",
+                                                                Snackbar.LENGTH_LONG).show();
                                                     }
                                                 }
                                                 else {
@@ -263,7 +261,8 @@ public class ProfileFragment extends Fragment {
                                         else {
                                             user.setBalance(user.getBalance() + amount);
                                             users.child(uid).child("balance").setValue(user.getBalance());
-                                            Snackbar.make(binding.getRoot(), "Промокод применен успешно", Snackbar.LENGTH_LONG).show();
+                                            Snackbar.make(binding.getRoot(), "Промокод применен успешно",
+                                                    Snackbar.LENGTH_LONG).show();
                                             binding.profileBalance.setText(String.valueOf(user.getBalance()));
                                         }
                                     }
@@ -273,13 +272,15 @@ public class ProfileFragment extends Fragment {
 
                                 @Override
                                 public void onCancelled(@NonNull DatabaseError error) {
-                                    Snackbar.make(binding.getRoot(), "Ошибка при попытке активации промокода.", Snackbar.LENGTH_LONG).show();
+                                    Snackbar.make(binding.getRoot(), "Ошибка при попытке активации промокода.",
+                                            Snackbar.LENGTH_LONG).show();
                                     dialog.dismiss();
                                 }
                             });
                         }
                         else {
-                            Snackbar.make(binding.getRoot(), "Такого промокода не существует", Snackbar.LENGTH_LONG).show();
+                            Snackbar.make(binding.getRoot(), "Такого промокода не существует",
+                                    Snackbar.LENGTH_LONG).show();
                         }
                     }
 
@@ -403,7 +404,8 @@ public class ProfileFragment extends Fragment {
             }
             else if (requestCode == REQUEST_IMAGE_PICK) {
                 if (data == null) {
-                    Snackbar.make(binding.getRoot(), "Не удалось загрузить изображение.", Snackbar.LENGTH_LONG).show();
+                    Snackbar.make(binding.getRoot(), "Не удалось загрузить изображение.",
+                            Snackbar.LENGTH_LONG).show();
                     return;
                 }
                 InputStream inputStream = null;

@@ -78,7 +78,8 @@ public class BoughtTicketsFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if ((currentCinema == null) && (currentShow == null)) {
-                    Snackbar.make(binding.getRoot(), "Выберите кинотеатр и сеанс", Snackbar.LENGTH_LONG).show();
+                    Snackbar.make(binding.getRoot(), "Выберите кинотеатр и сеанс",
+                            Snackbar.LENGTH_LONG).show();
                 }
                 else {
                     activityReference.showAvailableSeats(currentCinema, currentShow);

@@ -10,7 +10,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
@@ -77,7 +76,8 @@ public class RegistrationActivity extends AppCompatActivity {
                 .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
                     @Override
                     public void onSuccess(AuthResult authResult) {
-                        users.child(auth.getCurrentUser().getUid()).child("admin").addListenerForSingleValueEvent(new ValueEventListener() {
+                        users.child(auth.getCurrentUser().getUid()).child("admin")
+                                .addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot snapshot) {
                                 boolean value = snapshot.getValue(boolean.class);
@@ -87,7 +87,9 @@ public class RegistrationActivity extends AppCompatActivity {
                             @Override
                             public void onCancelled(@NonNull DatabaseError error) {
                                 saveAccountDataAndSwitchActivity(false);
-                                Snackbar.make(binding.root, "Не удалось загрузить данные о наличии прав администратора.", Snackbar.LENGTH_LONG).show();
+                                Snackbar.make(binding.root,
+                                        "Не удалось загрузить данные о наличии прав администратора.",
+                                        Snackbar.LENGTH_LONG).show();
                             }
                         });
                     }
@@ -156,14 +158,17 @@ public class RegistrationActivity extends AppCompatActivity {
                                         }).addOnFailureListener(new OnFailureListener() {
                                             @Override
                                             public void onFailure(@NonNull Exception e) {
-                                                Snackbar.make(binding.root, "Ошибка при регистрации: " + e.getMessage(), Snackbar.LENGTH_LONG).show();
+                                                Snackbar.make(binding.root,
+                                                        "Ошибка при регистрации: " + e.getMessage(),
+                                                        Snackbar.LENGTH_LONG).show();
                                             }
                                         });
                             }
                         }).addOnFailureListener(new OnFailureListener() {
                             @Override
                             public void onFailure(@NonNull Exception e) {
-                                Snackbar.make(binding.root, "Ошибка при регистрации: " + e.getMessage(), Snackbar.LENGTH_LONG).show();
+                                Snackbar.make(binding.root, "Ошибка при регистрации: " + e.getMessage(),
+                                        Snackbar.LENGTH_LONG).show();
                             }
                         });
             }
@@ -214,7 +219,8 @@ public class RegistrationActivity extends AppCompatActivity {
                                 editor.putString("email", email.getText().toString());
                                 editor.putString("password", pass.getText().toString());
                                 editor.apply();
-                                users.child(auth.getCurrentUser().getUid()).child("admin").addListenerForSingleValueEvent(new ValueEventListener() {
+                                users.child(auth.getCurrentUser().getUid()).child("admin")
+                                        .addListenerForSingleValueEvent(new ValueEventListener() {
                                     @Override
                                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                                         boolean value = snapshot.getValue(boolean.class);
@@ -224,14 +230,17 @@ public class RegistrationActivity extends AppCompatActivity {
                                     @Override
                                     public void onCancelled(@NonNull DatabaseError error) {
                                         saveAccountDataAndSwitchActivity(false);
-                                        Snackbar.make(binding.root, "Не удалось загрузить данные о наличии прав администратора.", Snackbar.LENGTH_LONG).show();
+                                        Snackbar.make(binding.root,
+                                                "Не удалось загрузить данные о наличии прав администратора.",
+                                                Snackbar.LENGTH_LONG).show();
                                     }
                                 });
                             }
                         }).addOnFailureListener(new OnFailureListener() {
                             @Override
                             public void onFailure(@NonNull Exception e) {
-                                Snackbar.make(binding.root, "Ошибка входа: " + e.getMessage(), Snackbar.LENGTH_LONG).show();
+                                Snackbar.make(binding.root, "Ошибка входа: " + e.getMessage(),
+                                        Snackbar.LENGTH_LONG).show();
                             }
                         });
             }

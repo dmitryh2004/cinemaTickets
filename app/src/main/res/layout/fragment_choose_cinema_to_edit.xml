@@ -87,7 +87,7 @@
                     <EditText
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:inputType="numberDecimal"
+                        android:inputType="numberSigned|numberDecimal"
                         android:id="@+id/cinemaLatitudeEditText"
                         android:hint="@string/cinemaLatitudeHint">
 
@@ -95,7 +95,7 @@
                     <EditText
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:inputType="numberDecimal"
+                        android:inputType="numberSigned|numberDecimal"
                         android:id="@+id/cinemaLongitudeEditText"
                         android:hint="@string/cinemaLongitudeHint">
 

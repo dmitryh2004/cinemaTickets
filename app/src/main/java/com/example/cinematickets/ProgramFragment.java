@@ -14,14 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebViewClient;
 
-import com.example.cinematickets.databinding.FragmentAuthorBinding;
 import com.example.cinematickets.databinding.FragmentProgramBinding;
-
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 
 public class ProgramFragment extends Fragment {
     private FragmentProgramBinding binding;

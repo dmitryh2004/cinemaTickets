@@ -4,7 +4,6 @@ import android.graphics.Bitmap;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 
 public class Film {
     private String shortDesc;

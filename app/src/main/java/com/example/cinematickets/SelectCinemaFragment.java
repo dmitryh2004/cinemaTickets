@@ -127,7 +127,8 @@ public class SelectCinemaFragment extends Fragment {
         }
         else {
             Spinner cinemaSpinner = binding.cinemaSpinner;
-            CinemaSpinnerAdapter adapter = new CinemaSpinnerAdapter(getContext(), R.layout.cinema_spinner_item, cinemasWithFilm);
+            CinemaSpinnerAdapter adapter = new CinemaSpinnerAdapter(getContext(),
+                    R.layout.cinema_spinner_item, cinemasWithFilm);
             adapter.setDropDownViewResource(R.layout.cinema_spinner_dropdown_item);
             cinemaSpinner.setAdapter(adapter);
             cinemaSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -145,13 +146,16 @@ public class SelectCinemaFragment extends Fragment {
                     showsWithFilm.sort(new Comparator<Show>() {
                         @Override
                         public int compare(Show o1, Show o2) {
-                            LocalDateTime date1 = LocalDateTime.parse(o1.getDate(), DateTimeFormatter.ofPattern("dd.MM.yy HH:mm"));
-                            LocalDateTime date2 = LocalDateTime.parse(o2.getDate(), DateTimeFormatter.ofPattern("dd.MM.yy HH:mm"));
+                            LocalDateTime date1 = LocalDateTime.parse(o1.getDate(),
+                                    DateTimeFormatter.ofPattern("dd.MM.yy HH:mm"));
+                            LocalDateTime date2 = LocalDateTime.parse(o2.getDate(),
+                                    DateTimeFormatter.ofPattern("dd.MM.yy HH:mm"));
                             return date1.compareTo(date2);
                         }
                     });
                     Spinner showSpinner = binding.showSpinner;
-                    ShowSpinnerAdapter adapter = new ShowSpinnerAdapter(getContext(), R.layout.show_spinner_item, showsWithFilm, uid);
+                    ShowSpinnerAdapter adapter = new ShowSpinnerAdapter(getContext(),
+                            R.layout.show_spinner_item, showsWithFilm, uid);
                     adapter.setDropDownViewResource(R.layout.show_spinner_dropdown_item);
                     showSpinner.setAdapter(adapter);
                     showSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
